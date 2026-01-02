@@ -11,7 +11,14 @@ const register = async (req, res, next) => {
         }
         const user = await userService.registerUser({ firstName, lastName, email, password });
         logger.info(`Registered: ${user.email}`);
-        res.status(201).json({ success: true, data: { _id: user._id, email: user.email } });
+        res.status(201).json({
+            success: true,
+            data: {
+                _id: user._id,
+                email: user.email,
+                token: generateToken(user._id)
+            }
+        });
     } catch (err) { next(err); }
 };
 
